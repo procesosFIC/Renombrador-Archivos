@@ -123,4 +123,5 @@ classDiagram
 - **Seguridad**: Evita sobrescrituras accidentales mediante validaciones previas; utiliza copias cuando se especifica una carpeta destino diferente.
 - **Extensibilidad**: El diccionario `FileModel.EXTENSIONES` facilita la adición de nuevos tipos de archivo. La arquitectura modular permite agregar nuevas vistas o controladores fácilmente.
 - **Interfaz de Usuario**: Diseño scrollable para manejar múltiples filas de configuración; incluye botones de restauración para revertir cambios.
+- **Sistema de Logging**: Los errores durante el procesamiento y restauración de archivos se registran automáticamente en `logs/renombramiento.log` con timestamps detallados.
 - **Distribución**: Compatible con creación de ejecutables independientes usando PyInstaller, permitiendo distribución sin instalación de Python.

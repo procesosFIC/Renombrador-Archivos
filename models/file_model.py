@@ -1,5 +1,6 @@
 import os
 import shutil
+import logging
 from pathlib import Path
 from typing import List, Dict, Any
 
@@ -17,6 +18,24 @@ class FileModel:
     def __init__(self):
         self.filas_datos: List[Dict[str, Any]] = []
         self.num_fila = 0
+
+        # Configurar logging
+        self.logger = logging.getLogger('RenamerApp')
+        self.logger.setLevel(logging.ERROR)
+
+        # Crear handler para archivo
+        log_path = Path('logs/renombramiento.log')
+        log_path.parent.mkdir(exist_ok=True)  # Crear carpeta si no existe
+
+        file_handler = logging.FileHandler(log_path, encoding='utf-8')
+        file_handler.setLevel(logging.ERROR)
+
+        # Formato del log
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+
+        # Agregar handler al logger
+        self.logger.addHandler(file_handler)
 
     def agregar_fila(self) -> Dict[str, Any]:
         """Crea una nueva fila de datos."""
@@ -126,7 +145,9 @@ class FileModel:
                     resultados["total_renombrados"] += 1
                     procesados.append({"original_name": archivo.name, "nuevo_name": nuevo_nombre})
                 except Exception as e:
-                    resultados["detalles"] += f"  Error al procesar {archivo.name}: {e}\n"
+                    error_msg = f"Error al procesar {archivo.name}: {e}"
+                    resultados["detalles"] += f"  {error_msg}\n"
+                    self.logger.error(error_msg)
 
             resultados["procesados"][fila["num"]] = procesados
             fila["procesados"] = procesados
@@ -141,19 +162,23 @@ class FileModel:
         restaurados = 0
 
         for p in fila["procesados"]:
-            if destino != ruta:
-                # Eliminar copia del destino
-                nuevo_path = Path(destino) / p["nuevo_name"]
-                if nuevo_path.exists():
-                    nuevo_path.unlink()
-                    restaurados += 1
-            else:
-                # Renombrar de vuelta
-                original_path = Path(ruta) / p["original_name"]
-                nuevo_path = Path(ruta) / p["nuevo_name"]
-                if nuevo_path.exists():
-                    nuevo_path.rename(original_path)
-                    restaurados += 1
+            try:
+                if destino != ruta:
+                    # Eliminar copia del destino
+                    nuevo_path = Path(destino) / p["nuevo_name"]
+                    if nuevo_path.exists():
+                        nuevo_path.unlink()
+                        restaurados += 1
+                else:
+                    # Renombrar de vuelta
+                    original_path = Path(ruta) / p["original_name"]
+                    nuevo_path = Path(ruta) / p["nuevo_name"]
+                    if nuevo_path.exists():
+                        nuevo_path.rename(original_path)
+                        restaurados += 1
+            except Exception as e:
+                error_msg = f"Error al restaurar {p['nuevo_name']}: {e}"
+                self.logger.error(error_msg)
 
         fila["procesados"] = []
         return restaurados
