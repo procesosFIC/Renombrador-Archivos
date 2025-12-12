@@ -1,60 +1,110 @@
 # Manual Técnico - Aplicación de Renombramiento Masivo
 
-Esta aplicación está desarrollada en Python y utiliza Tkinter para la interfaz gráfica de usuario. Permite renombrar archivos de manera masiva en una carpeta seleccionada, con opciones para filtrar por tipo de archivo o procesar todos los archivos. Incluye funcionalidades de restauración y distribución como ejecutable independiente.
+Esta aplicación está desarrollada en Python siguiendo el patrón de arquitectura Modelo-Vista-Controlador (MVC) para una mejor separación de responsabilidades, escalabilidad y mantenibilidad. Utiliza Tkinter para la interfaz gráfica de usuario y permite renombrar archivos de manera masiva en una carpeta seleccionada, con opciones para filtrar por tipo de archivo. Incluye funcionalidades de restauración y distribución como ejecutable independiente.
 
-La estructura principal se basa en la clase `RenamerApp`, que gestiona la interfaz, validaciones y procesamiento de archivos.
+### Arquitectura MVC
+
+La aplicación sigue el patrón Modelo-Vista-Controlador (MVC) para separar responsabilidades:
+
+- **Modelo (`models/file_model.py`)**: Gestiona los datos y la lógica de negocio relacionada con archivos.
+- **Vista (`views/main_view.py`)**: Maneja la interfaz de usuario con Tkinter.
+- **Controlador (`controllers/renamer_controller.py`)**: Coordina entre modelo y vista, manejando eventos y lógica de aplicación.
 
 ### Componentes Principales
 
 - **Interfaz Gráfica**: Utiliza widgets de Tkinter para crear una interfaz scrollable que permite múltiples configuraciones de renombramiento.
 - **Procesamiento de Archivos**: Emplea `pathlib` y `shutil` para manejar rutas y operaciones de archivo de manera segura, soportando renombrado in-situ o copia a destino.
 - **Validación**: Incluye validaciones exhaustivas antes del procesamiento para evitar errores, incluyendo verificación de rutas, nombres y tipos.
-- **Diccionario de Extensiones**: `EXTENSIONES` define los tipos de archivo soportados, incluyendo una opción "Todos" para procesar cualquier archivo sin filtro de extensión.
+- **Diccionario de Extensiones**: `FileModel.EXTENSIONES` define los tipos de archivo soportados.
 
-### Clase RenamerApp
+### Clases Principales
 
-La clase principal contiene los siguientes atributos y métodos:
+#### FileModel (Modelo)
 
-#### Atributos
+Gestiona los datos de filas y operaciones de archivo:
 
-- `root`: Ventana principal de Tkinter.
-- `filas_datos`: Lista que almacena los datos de cada fila de configuración.
-- `canvas`, `scrollbar`, `scrollable_frame`: Componentes para el área scrollable.
-- `filas_frame`: Contenedor para las filas de configuración.
-- `botones_frame`: Contenedor para los botones de control.
-- `text_resultados`: Widget de texto para mostrar resultados.
+- **Atributos**: `filas_datos`, `num_fila`, `EXTENSIONES`
+- **Métodos**: `agregar_fila()`, `eliminar_fila()`, `validar_fila()`, `procesar_filas()`, `restaurar_fila()`, `reiniciar()`
 
-#### Métodos
+#### MainView (Vista)
 
-- `__init__(root)`: Inicializa la aplicación y crea la interfaz.
-- `agregar_fila()`: Crea una nueva fila de configuración.
-- `seleccionar_ruta(var)`: Abre un diálogo de selección de archivo con filtro "Todos los archivos" para elegir un archivo representativo, y establece la carpeta contenedora como la ruta seleccionada.
-- `eliminar_fila(datos_obj)`: Elimina una fila de la interfaz y la lista.
-- `restaurar_fila(datos_fila)`: Restaura los archivos a su estado original.
-- `reiniciar()`: Reinicia la aplicación eliminando todas las filas.
-- `procesar_datos()`: Valida y ejecuta el renombramiento de archivos.
+Maneja la interfaz de usuario:
+
+- **Atributos**: `root`, `canvas`, `scrollbar`, `text_resultados`, `filas_frames`
+- **Métodos**: `add_row()`, `remove_row()`, `show_results()`, `show_error()`, `ask_yes_no()`
+
+#### RenamerController (Controlador)
+
+Coordina modelo y vista:
+
+- **Atributos**: `model`, `view`
+- **Métodos**: `add_row()`, `delete_row()`, `select_path()`, `process()`, `reset()`, `restore_row()`
+
+### Diagrama de Arquitectura MVC
+
+```mermaid
+graph TD
+    A[main.py] --> B[RenamerController]
+    B --> C[MainView]
+    B --> D[FileModel]
+
+    C --> B
+    D --> B
+
+    subgraph "Modelo"
+        D[FileModel<br/>- filas_datos<br/>- EXTENSIONES<br/>+ procesar_filas()<br/>+ restaurar_fila()]
+    end
+
+    subgraph "Vista"
+        C[MainView<br/>- root<br/>- canvas<br/>- text_resultados<br/>+ add_row()<br/>+ show_results()]
+    end
+
+    subgraph "Controlador"
+        B[RenamerController<br/>- model<br/>- view<br/>+ process()<br/>+ reset()]
+    end
+```
 
 ### Diagrama de Clases
 
 ```mermaid
 classDiagram
-    class RenamerApp {
-        +root: Tk
-        +filas_datos: list
-        +canvas: Canvas
-        +scrollbar: Scrollbar
-        +scrollable_frame: Frame
-        +filas_frame: Frame
-        +botones_frame: Frame
-        +text_resultados: Text
-        +__init__(root)
+    class FileModel {
+        +filas_datos: List[Dict]
+        +num_fila: int
+        +EXTENSIONES: Dict
         +agregar_fila()
-        +seleccionar_ruta(var)
-        +eliminar_fila(datos_obj)
-        +restaurar_fila(datos_fila)
+        +eliminar_fila(fila)
+        +validar_fila(fila)
+        +procesar_filas()
+        +restaurar_fila(fila)
         +reiniciar()
-        +procesar_datos()
     }
+
+    class MainView {
+        +root: Tk
+        +canvas: Canvas
+        +text_resultados: Text
+        +filas_frames: Dict
+        +add_row(fila_data)
+        +remove_row(fila_data)
+        +show_results(text)
+        +show_error(title, message)
+        +ask_yes_no(title, message)
+    }
+
+    class RenamerController {
+        +model: FileModel
+        +view: MainView
+        +add_row()
+        +delete_row(fila_data)
+        +select_path(var)
+        +process()
+        +reset()
+        +restore_row(fila_data)
+    }
+
+    RenamerController --> FileModel
+    RenamerController --> MainView
 ```
 
 ### Flujo de Procesamiento
@@ -67,9 +117,10 @@ classDiagram
 
 ### Consideraciones Técnicas
 
+- **Arquitectura MVC**: Separación clara de responsabilidades facilita el mantenimiento, testing y escalabilidad.
 - **Manejo de Errores**: Utiliza bloques try-except para operaciones de archivo, capturando excepciones y mostrando mensajes de error al usuario.
 - **Rendimiento**: Los archivos se ordenan alfabéticamente antes del procesamiento para asegurar consistencia en el renombrado secuencial.
 - **Seguridad**: Evita sobrescrituras accidentales mediante validaciones previas; utiliza copias cuando se especifica una carpeta destino diferente.
-- **Extensibilidad**: El diccionario `EXTENSIONES` facilita la adición de nuevos tipos de archivo. La opción "Todos" permite procesamiento sin restricciones de extensión.
+- **Extensibilidad**: El diccionario `FileModel.EXTENSIONES` facilita la adición de nuevos tipos de archivo. La arquitectura modular permite agregar nuevas vistas o controladores fácilmente.
 - **Interfaz de Usuario**: Diseño scrollable para manejar múltiples filas de configuración; incluye botones de restauración para revertir cambios.
 - **Distribución**: Compatible con creación de ejecutables independientes usando PyInstaller, permitiendo distribución sin instalación de Python.
