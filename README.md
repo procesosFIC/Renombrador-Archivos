@@ -24,9 +24,9 @@ Esta aplicación permite renombrar archivos de manera masiva en una carpeta sele
 
 ## Documentación
 
-- [Manual de Usuario](Documentacion/MANUAL_USUARIO.md): Guía completa para usar la aplicación.
-- [Manual Técnico](Documentacion/MANUAL_TECNICO.md): Detalles técnicos sobre la implementación y arquitectura.
-- [Manual de Distribución](Documentacion/MANUAL_DISTRIBUCION.md): Instrucciones para crear un ejecutable distribuible con PyInstaller.
+- [Manual de Usuario](docs/MANUAL_USUARIO.md): Guía completa para usar la aplicación.
+- [Manual Técnico](docs/MANUAL_TECNICO.md): Detalles técnicos sobre la implementación y arquitectura.
+- [Manual de Distribución](docs/MANUAL_DISTRIBUCION.md): Instrucciones para crear un ejecutable distribuible con PyInstaller.
 
 ## Contribución
 
