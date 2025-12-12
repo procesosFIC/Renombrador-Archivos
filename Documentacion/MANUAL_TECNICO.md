@@ -52,15 +52,15 @@ graph TD
     D --> B
 
     subgraph "Modelo"
-        D[FileModel<br/>- filas_datos<br/>- EXTENSIONES<br/>+ procesar_filas()<br/>+ restaurar_fila()]
+        D["FileModel<br/>- filas_datos<br/>- EXTENSIONES<br/>+ procesar_filas()<br/>+ restaurar_fila()"]
     end
 
     subgraph "Vista"
-        C[MainView<br/>- root<br/>- canvas<br/>- text_resultados<br/>+ add_row()<br/>+ show_results()]
+        C["MainView<br/>- root<br/>- canvas<br/>- text_resultados<br/>+ add_row()<br/>+ show_results()"]
     end
 
     subgraph "Controlador"
-        B[RenamerController<br/>- model<br/>- view<br/>+ process()<br/>+ reset()]
+        B["RenamerController<br/>- model<br/>- view<br/>+ process()<br/>+ reset()"]
     end
 ```
 
