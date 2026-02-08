@@ -2,12 +2,14 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from typing import Callable, Dict, Any
 
+import messages
+
 class MainView:
     """Vista para la interfaz de usuario usando Tkinter."""
 
     def __init__(self, root: tk.Tk):
         self.root = root
-        self.root.title("Renombramiento Masivo de Fotos y Docs")
+        self.root.title(messages.APP_TITLE)
         self.root.geometry("515x700")
         self.root.resizable(False, False)
 
@@ -29,11 +31,11 @@ class MainView:
     def _setup_ui(self):
         """Configura la interfaz de usuario."""
         # Título
-        titulo = tk.Label(self.root, text="Configuración de Renombramiento", font=("Arial", 14, "bold"))
+        titulo = tk.Label(self.root, text=messages.VIEW_TITLE, font=("Arial", 14, "bold"))
         titulo.pack(pady=10)
 
         # Botón Reiniciar
-        btn_reiniciar = tk.Button(self.root, text="Reiniciar", command=self._on_reset)
+        btn_reiniciar = tk.Button(self.root, text=messages.BUTTON_RESET, command=self._on_reset)
         btn_reiniciar.pack(anchor="w", padx=10, pady=(0,10))
 
         # Área scrollable
@@ -88,10 +90,10 @@ class MainView:
         self.scrollbar.pack(side="right", fill="y")
 
         # Botones de control
-        self.btn_add = tk.Button(self.botones_frame, text="+ Añadir otra fila", command=self._on_add_row)
+        self.btn_add = tk.Button(self.botones_frame, text=messages.BUTTON_ADD_ROW, command=self._on_add_row)
         self.btn_add.pack(anchor="center", pady=5)
 
-        self.btn_empezar = tk.Button(self.botones_frame, text="EMPEZAR", command=self._on_process,
+        self.btn_empezar = tk.Button(self.botones_frame, text=messages.BUTTON_PROCESS, command=self._on_process,
                                      bg="#4CAF50", fg="white", font=("Arial", 11, "bold"))
         self.btn_empezar.pack(anchor="center", pady=5)
 
@@ -112,7 +114,7 @@ class MainView:
         line1.pack(fill="x", pady=2)
 
         path_var = tk.StringVar()
-        btn_ruta = tk.Button(line1, text="📂 Elegir Origen", command=lambda: self._on_select_path(path_var))
+        btn_ruta = tk.Button(line1, text=messages.BUTTON_SELECT_ORIGIN, command=lambda: self._on_select_path(path_var))
         btn_ruta.pack(side="left")
 
         entry_ruta = tk.Entry(line1, textvariable=path_var, state="readonly", width=50)
@@ -125,11 +127,11 @@ class MainView:
         line2 = tk.Frame(row_frame)
         line2.pack(fill="x", pady=5)
 
-        tk.Label(line2, text="Nombre nuevo:").pack(side="left")
+        tk.Label(line2, text=messages.LABEL_NEW_NAME).pack(side="left")
         entry_nombre = tk.Entry(line2, width=25)
         entry_nombre.pack(side="left", padx=5)
 
-        tk.Label(line2, text="Tipo:").pack(side="left", padx=(15, 5))
+        tk.Label(line2, text=messages.LABEL_TYPE).pack(side="left", padx=(15, 5))
         combo_tipo = ttk.Combobox(line2, values=list(fila_data.get("extensiones", {}).keys()), state="readonly", width=10)
         combo_tipo.pack(side="left")
 
@@ -137,9 +139,9 @@ class MainView:
         line3 = tk.Frame(row_frame)
         line3.pack(fill="x", pady=5)
 
-        tk.Label(line3, text="Carpeta destino (opcional):").pack(side="left")
+        tk.Label(line3, text=messages.LABEL_DESTINATION).pack(side="left")
         path_destino_var = tk.StringVar()
-        btn_destino = tk.Button(line3, text="📂 Elegir Destino", command=lambda: self._on_select_path(path_destino_var))
+        btn_destino = tk.Button(line3, text=messages.BUTTON_SELECT_DEST, command=lambda: self._on_select_path(path_destino_var))
         btn_destino.pack(side="left", padx=5)
         entry_destino = tk.Entry(line3, textvariable=path_destino_var, state="readonly", width=30)
         entry_destino.pack(side="left", padx=5)
@@ -148,7 +150,7 @@ class MainView:
         line4 = tk.Frame(row_frame)
         line4.pack(fill="x", pady=5)
 
-        btn_restaurar = tk.Button(line4, text="Restaurar", state="disabled", command=lambda: self._on_restore(fila_data))
+        btn_restaurar = tk.Button(line4, text=messages.BUTTON_RESTORE, state="disabled", command=lambda: self._on_restore(fila_data))
         btn_restaurar.pack(side="right", padx=5)
 
         # Guardar referencias

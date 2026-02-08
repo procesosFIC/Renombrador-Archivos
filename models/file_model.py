@@ -1,8 +1,9 @@
 import os
 import shutil
-import logging
 from pathlib import Path
 from typing import List, Dict, Any
+
+from logger import get_app_logger
 
 class FileModel:
     """Modelo para manejar datos y operaciones de archivo."""
@@ -18,24 +19,7 @@ class FileModel:
     def __init__(self):
         self.filas_datos: List[Dict[str, Any]] = []
         self.num_fila = 0
-
-        # Configurar logging
-        self.logger = logging.getLogger('RenamerApp')
-        self.logger.setLevel(logging.ERROR)
-
-        # Crear handler para archivo
-        log_path = Path('logs/renombramiento.log')
-        log_path.parent.mkdir(exist_ok=True)  # Crear carpeta si no existe
-
-        file_handler = logging.FileHandler(log_path, encoding='utf-8')
-        file_handler.setLevel(logging.ERROR)
-
-        # Formato del log
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        file_handler.setFormatter(formatter)
-
-        # Agregar handler al logger
-        self.logger.addHandler(file_handler)
+        self.logger = get_app_logger()
 
     def agregar_fila(self) -> Dict[str, Any]:
         """Crea una nueva fila de datos."""
