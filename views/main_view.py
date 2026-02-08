@@ -19,6 +19,7 @@ class MainView:
         self.on_select_path: Callable[[tk.StringVar], None] = None
         self.on_process: Callable[[], None] = None
         self.on_reset: Callable[[], None] = None
+        self.on_detect_folders: Callable[[], None] = None
         self.on_restore: Callable[[Dict[str, Any]], None] = None
 
         # Componentes de la interfaz
@@ -37,6 +38,43 @@ class MainView:
         # Botón Reiniciar
         btn_reiniciar = tk.Button(self.root, text=messages.BUTTON_RESET, command=self._on_reset)
         btn_reiniciar.pack(anchor="w", padx=10, pady=(0,10))
+
+        # Panel: Renombramiento masivo de carpetas
+        panel_frame = tk.LabelFrame(self.root, text=messages.PANEL_TITLE, padx=10, pady=8)
+        panel_frame.pack(fill="x", padx=10, pady=(0,10))
+
+        # Source selector row
+        src_row = tk.Frame(panel_frame)
+        src_row.pack(fill="x", pady=2)
+        self.panel_src_var = tk.StringVar()
+        tk.Label(src_row, text=messages.PANEL_SRC_LABEL).pack(side="left")
+        entry_panel_src = tk.Entry(src_row, textvariable=self.panel_src_var, state="readonly", width=40)
+        entry_panel_src.pack(side="left", padx=5)
+        btn_panel_browse = tk.Button(src_row, text=messages.BUTTON_SELECT_ORIGIN, command=lambda: self._on_select_path(self.panel_src_var))
+        btn_panel_browse.pack(side="left", padx=5)
+ 
+        # Destination selector row (placed immediately under source)
+        dest_row = tk.Frame(panel_frame)
+        dest_row.pack(fill="x", pady=2)
+        self.panel_dest_var = tk.StringVar()
+        tk.Label(dest_row, text=messages.PANEL_DEST_LABEL).pack(side="left")
+        entry_panel_dest = tk.Entry(dest_row, textvariable=self.panel_dest_var, state="readonly", width=30)
+        entry_panel_dest.pack(side="left", padx=5)
+        btn_panel_dest = tk.Button(dest_row, text=messages.BUTTON_SELECT_DEST, command=lambda: self._on_select_path(self.panel_dest_var))
+        btn_panel_dest.pack(side="left", padx=5)
+ 
+        # Type selector row
+        type_row = tk.Frame(panel_frame)
+        type_row.pack(fill="x", pady=2)
+        tk.Label(type_row, text=messages.LABEL_TYPE).pack(side="left")
+        self.panel_type_combo = ttk.Combobox(type_row, values=[], state="readonly", width=20)
+        self.panel_type_combo.pack(side="left", padx=5)
+ 
+        # Detect button row (placed below Type)
+        detect_row = tk.Frame(panel_frame)
+        detect_row.pack(fill="x", pady=2)
+        self.btn_detect = tk.Button(detect_row, text=messages.PANEL_DETECT_BUTTON, command=self._on_detect)
+        self.btn_detect.pack(side="left", padx=5)
 
         # Área scrollable
         self.canvas = tk.Canvas(self.root)
@@ -153,6 +191,14 @@ class MainView:
         btn_restaurar = tk.Button(line4, text=messages.BUTTON_RESTORE, state="disabled", command=lambda: self._on_restore(fila_data))
         btn_restaurar.pack(side="right", padx=5)
 
+        # Inicializar widgets con valores pasados en fila_data (evitar filas vacías)
+        # Use defaults when key is missing; this ensures programmatically creadas filas muestran sus valores.
+        path_var.set(fila_data.get("ruta_origen", ""))
+        entry_nombre.delete(0, tk.END)
+        entry_nombre.insert(0, fila_data.get("nombre_nuevo", ""))
+        combo_tipo.set(fila_data.get("tipo", ""))
+        path_destino_var.set(fila_data.get("ruta_destino", ""))
+
         # Guardar referencias
         fila_data.update({
             "frame": row_frame,
@@ -250,3 +296,7 @@ class MainView:
     def _on_restore(self, fila_data):
         if self.on_restore:
             self.on_restore(fila_data)
+
+    def _on_detect(self):
+        if self.on_detect_folders:
+            self.on_detect_folders()

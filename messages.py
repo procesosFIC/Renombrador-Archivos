@@ -10,6 +10,12 @@ LABEL_NEW_NAME = "Nombre nuevo:"
 LABEL_TYPE = "Tipo:"
 LABEL_DESTINATION = "Carpeta destino (opcional):"
 
+PANEL_TITLE = "Renombramiento masivo de carpetas"
+PANEL_SRC_LABEL = "Carpeta origen:"
+PANEL_DEST_LABEL = "Carpeta destino (opcional):"
+PANEL_DETECT_BUTTON = "Generar"
+PANEL_NO_MATCHES = "No se encontraron carpetas con archivos del tipo seleccionado."
+
 EMPTY_PROCESS_TITLE = "Vacío"
 EMPTY_PROCESS_MESSAGE = "No hay filas para procesar."
 WARNING_DIALOG_TITLE = "Advertencia"
@@ -22,6 +28,9 @@ ERROR_DIALOG_TITLE = "Error"
 PROCESS_EXCEPTION_MESSAGE = "Ocurrió un error inesperado al procesar los archivos. Revisa los logs para más detalles."
 RESTORE_EXCEPTION_MESSAGE = "Ocurrió un error al restaurar los archivos. Revisa los logs para más detalles."
 RESTORE_COMPLETE_TITLE = "Restauración Completada"
+
+FILENAME_TOO_LONG_TITLE = "Nombre demasiado largo"
+FILENAME_TOO_LONG_MESSAGE = "El nombre generado excede los {max} caracteres: {name}"
 
 RESULTS_TEMPLATE = (
     "Proceso completado.\n"

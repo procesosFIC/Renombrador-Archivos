@@ -119,19 +119,48 @@ class FileModel:
                 nuevo_nombre = f"{d['nombre']}_{idx:02d}{extension}"
                 nuevo_path = carpeta_destino / nuevo_nombre
 
+                # Validate filename length (common FS limit is 255 characters)
                 try:
+                    if len(nuevo_nombre) > 255:
+                        error_msg = f"Fila #{fila['num']}: Nombre generado demasiado largo: {nuevo_nombre} (len={len(nuevo_nombre)})"
+                        resultados["errores"].append(error_msg)
+                        self.logger.error(error_msg)
+                        # Stop processing this fila when a generated name is invalid
+                        procesados = []
+                        break
+
                     if d['destino'] != d['ruta']:
-                        shutil.copy2(str(archivo), str(nuevo_path))
-                        resultados["detalles"] += f"  {archivo.name} → {nuevo_nombre} (copiado)\n"
+                        try:
+                            shutil.copy2(str(archivo), str(nuevo_path))
+                            resultados["detalles"] += f"  {archivo.name} → {nuevo_nombre} (copiado)\n"
+                        except (OSError, IOError, ValueError) as e:
+                            error_msg = f"Error al copiar {archivo.name} → {nuevo_nombre}: {e}"
+                            resultados["errores"].append(error_msg)
+                            resultados["detalles"] += f"  {error_msg}\n"
+                            self.logger.error(error_msg, exc_info=True)
+                            # continue with next file
+                            continue
                     else:
-                        archivo.rename(nuevo_path)
-                        resultados["detalles"] += f"  {archivo.name} → {nuevo_nombre} (renombrado)\n"
+                        try:
+                            archivo.rename(nuevo_path)
+                            resultados["detalles"] += f"  {archivo.name} → {nuevo_nombre} (renombrado)\n"
+                        except (OSError, IOError, ValueError) as e:
+                            error_msg = f"Error al renombrar {archivo.name} → {nuevo_nombre}: {e}"
+                            resultados["errores"].append(error_msg)
+                            resultados["detalles"] += f"  {error_msg}\n"
+                            self.logger.error(error_msg, exc_info=True)
+                            # continue with next file
+                            continue
+
                     resultados["total_renombrados"] += 1
                     procesados.append({"original_name": archivo.name, "nuevo_name": nuevo_nombre})
                 except Exception as e:
-                    error_msg = f"Error al procesar {archivo.name}: {e}"
+                    # Catch-all to avoid crashing the whole process; log full traceback
+                    error_msg = f"Error inesperado al procesar {archivo.name}: {e}"
+                    resultados["errores"].append(error_msg)
                     resultados["detalles"] += f"  {error_msg}\n"
-                    self.logger.error(error_msg)
+                    self.logger.error(error_msg, exc_info=True)
+                    # continue with next file
 
             resultados["procesados"][fila["num"]] = procesados
             fila["procesados"] = procesados
