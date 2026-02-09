@@ -11,7 +11,7 @@ class MainView:
         self.root = root
         self.root.title(messages.APP_TITLE)
         self.root.geometry("515x700")
-        self.root.resizable(False, False)
+        self.root.resizable(True, True)
 
         # Callbacks para eventos
         self.on_add_row: Callable[[], None] = None
