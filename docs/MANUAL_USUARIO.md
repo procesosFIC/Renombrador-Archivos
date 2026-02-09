@@ -11,37 +11,37 @@ Esta aplicación permite renombrar masivamente archivos de fotos y documentos de
 
 1. **Inicio**: Al ejecutar la aplicación, se abre una ventana con el título "Renombramiento Masivo de Fotos y Docs".
 
-2. **Configuración de Filas**:
-   - La aplicación inicia con una fila de configuración.
-   - Cada fila permite configurar una tarea de renombramiento independiente.
+2. **Generación Automática de Filas (Panel Superior)**:
+   - **Carpeta origen**: Selecciona la carpeta raíz donde buscar subcarpetas con archivos.
+   - **Carpeta destino (opcional)**: Selecciona una carpeta base para guardar los archivos renombrados. Si se deja vacío, se renombrarán en su ubicación original.
+   - **Tipo**: Elige el tipo de archivo a buscar (Fotos, Word, Pdf, Excel).
+   - **Generar**: Al hacer clic, la aplicación buscará recursivamente carpetas que contengan archivos del tipo seleccionado y creará automáticamente una fila de configuración para cada una.
 
-3. **Campos de Configuración por Fila**:
-   - **Elegir Origen**: Haz clic en "📂 Elegir Origen" para seleccionar la carpeta que contiene los archivos a renombrar.
-   - **Nombre nuevo**: Ingresa el prefijo para los nuevos nombres de archivo (ej. "Vacaciones").
-   - **Tipo**: Selecciona el tipo de archivo de la lista desplegable (Fotos, Word, Pdf, Excel).
-   - **Carpeta destino (opcional)**: Si deseas copiar los archivos a otra carpeta en lugar de renombrarlos en la original, selecciona una carpeta destino.
+3. **Configuración Manual de Filas**:
+   - Puedes agregar filas manualmente o editar las generadas automáticamente.
+   - **Elegir Origen**: Selecciona la carpeta con los archivos a renombrar.
+   - **Nombre nuevo**: Ingresa el prefijo para los archivos (ej. "Vacaciones"). En la generación automática, esto se completa basado en el nombre de la carpeta.
+   - **Tipo**: Selecciona el tipo de archivo.
+   - **Carpeta destino**: Opcional.
+   - **Eliminar**: Usa el botón "X" para quitar una fila.
 
 4. **Agregar Más Filas**:
-   - Haz clic en "+ Añadir otra fila" para agregar configuraciones adicionales.
+   - Haz clic en "+ Añadir otra fila" para agregar configuraciones manuales adicionales.
 
-5. **Eliminar Filas**:
-   - Usa el botón "X" en la esquina superior derecha de cada fila para eliminarla.
+5. **Reiniciar**:
+   - El botón "Reiniciar" limpia todas las filas (manuales y generadas) y los resultados.
 
-6. **Reiniciar**:
-   - El botón "Reiniciar" elimina todas las filas y limpia los resultados, permitiendo empezar de nuevo.
-
-7. **Procesar**:
+6. **Procesar**:
    - Haz clic en "EMPEZAR" para iniciar el proceso de renombramiento.
-   - La aplicación validará los campos y mostrará advertencias o errores si faltan datos.
-   - Se mostrará una confirmación antes de proceder.
+   - La aplicación validará los campos y pedirá confirmación.
 
-8. **Resultados**:
-   - Los resultados se muestran en el cuadro de texto inferior, incluyendo detalles de archivos procesados.
-   - Para filas procesadas, se habilita el botón "Restaurar" para revertir los cambios.
+7. **Resultados**:
+   - Los detalles del proceso se muestran en el cuadro de texto inferior.
+   - Se habilitará el botón "Restaurar" en cada fila procesada exitosamente.
 
-9. **Restaurar**:
-   - Si se especificó una carpeta destino, "Restaurar" elimina las copias.
-   - Si no, renombra los archivos de vuelta a sus nombres originales.
+8. **Restaurar**:
+   - Si se especificó una carpeta destino, "Restaurar" elimina las copias creadas.
+   - Si se renombró en la carpeta original, "Restaurar" devuelve los archivos a sus nombres originales.
 
 ### Notas Importantes
 
