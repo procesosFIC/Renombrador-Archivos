@@ -1,9 +1,10 @@
 # Renombramiento Masivo de Fotos y Documentos
 
-Esta aplicación permite renombrar archivos de manera masiva en una carpeta seleccionada. Está desarrollada en Python con una interfaz gráfica de usuario (GUI) utilizando Tkinter. Soporta filtrado por tipo de archivo (fotos, documentos Word, PDFs, Excel) o procesamiento de todos los archivos sin restricciones.
+Esta aplicación permite renombrar archivos de manera masiva en una carpeta seleccionada. Está desarrollada en Python con una interfaz gráfica de usuario (GUI) utilizando Tkinter. Soporta filtrado por tipo de archivo (fotos, documentos Word, PDFs, Excel), procesamiento manual de filas, y **generación automática de tareas** mediante el escaneo recursivo de directorios.
 
 ## Características Principales
 
+- **Generación Automática**: Escanea recursivamente una carpeta origen y crea automáticamente filas de configuración para todas las subcarpetas que contengan archivos del tipo seleccionado.
 - **Renombrado Masivo**: Renombra múltiples archivos con un patrón personalizado (ej. nombre_01.ext, nombre_02.ext).
 - **Filtrado por Tipo**: Opciones para procesar solo fotos, documentos o todos los archivos.
 - **Copia o Renombrado**: Puede renombrar en la misma carpeta o copiar a una carpeta destino.
