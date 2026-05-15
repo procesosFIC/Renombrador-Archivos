@@ -9,8 +9,9 @@ class FileModel:
 
     # Diccionario de extensiones
     EXTENSIONES = {
-        "Fotos": [".jpg", ".png", ".jpeg"],
+        "Fotos": [".jpg", ".png", ".jpeg", "bmp", ".gif", ".tiff", ".svg", ".webp", ".heic", ".raw", ".psd", ".ai", ".indd", ".pdf"],
         "Word": [".docx", ".doc"],
+        "Videos": [".mp4", ".avi", ".mkv", ".mov", ".wmv", ".flv", ".mpeg", ".mpg", ".webm", ".3gp", ".m4v", ".vob", ".ogv", ".ogg", ".mkv", ".mp4", ".avi", ".flv", ".wmv", ".mpeg", ".mpg", ".webm", ".3gp", ".m4v", ".vob", ".ogv", ".ogg"],
         "Pdf": [".pdf"],
         "Excel": [".xlsx", ".xls"]
     }

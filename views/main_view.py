@@ -9,7 +9,7 @@ class MainView:
         self.root = root
         self.root.title("Renombramiento Masivo de Fotos y Docs")
         self.root.geometry("515x700")
-        self.root.resizable(False, False)
+        #self.root.resizable(False, False)
 
         # Callbacks para eventos
         self.on_add_row: Callable[[], None] = None
@@ -92,7 +92,7 @@ class MainView:
         self.btn_add.pack(anchor="center", pady=5)
 
         self.btn_empezar = tk.Button(self.botones_frame, text="EMPEZAR", command=self._on_process,
-                                     bg="#4CAF50", fg="white", font=("Arial", 11, "bold"))
+                                     bg="#4CAF50", fg="white", font=("Arial", 10, "bold"))
         self.btn_empezar.pack(anchor="center", pady=5)
 
         # Cuadro de resultados
